@@ -7,7 +7,3 @@ The two arguments of the script are the slug of the tournament and of the event.
 Now, open a terminal in the directory you have the code saved and run the command `python post_bracket_stats.py TOURNAMENT_NAME EVENT_NAME`. After a short period, you should see the stats printed to the console.
 
 I didn't bother with any error handling in the API requests section, so if something goes wrong just run it again and it'll probably work after a few tries. 
-
-TODO:
-    The above error handling
-    Add support for entering only the slug
