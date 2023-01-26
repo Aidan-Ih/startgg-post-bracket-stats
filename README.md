@@ -1,4 +1,4 @@
-## This is a small tool to generate player statistics from double elimination brackets on start.gg
+## This is a small tool to generate player statistics, namely Seed Performance Ranking and Upset Factor, from double elimination brackets on start.gg
 
 First, follow the directions [here](https://developer.start.gg/docs/authentication) to get a token. Save it to a file named ".token" in the same directory as the script
 
