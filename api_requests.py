@@ -1,7 +1,7 @@
 import requests
 
 #gets the event ID from the slug of the tournament, and the event name
-def get_event_id(slug, event_name, token):
+def get_event_id(slug, event_slug, token):
     url = "https://api.start.gg/gql/alpha"
     headers = {"Authorization": "Bearer " + token}
     query = """
@@ -11,7 +11,7 @@ def get_event_id(slug, event_name, token):
             name
             events {
                 id
-                name
+                slug
             }
         }
     }
@@ -22,11 +22,10 @@ def get_event_id(slug, event_name, token):
     
     to_send = {"query": query,
                "variables": variables}
-    
     response = requests.post(url, json=to_send, headers=headers)
     events = response.json()["data"]["tournament"]["events"]
     for event in events:
-        if event["name"] == event_name:
+        if event["slug"].split("/")[-1] == event_slug:
             return event["id"]
     
     return -1
@@ -83,7 +82,7 @@ def get_entrants(token, id):
         try:
             data = response.json()["data"]["event"]["entrants"]
         except:
-            print(response)
+            print(response.json())
         info = data["pageInfo"]
         players += data["nodes"]
         
