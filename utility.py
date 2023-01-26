@@ -1,4 +1,3 @@
-import math
 #Supports to 256 player brackets
 placements = [1, 2, 3, 4, 5, 7, 9, 13, 17, 25, 33, 49, 65, 97, 129, 193]
 

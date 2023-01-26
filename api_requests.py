@@ -1,4 +1,3 @@
-from dotenv import dotenv_values
 import requests
 
 #returns an array of entrants with their name, seed, id, and placement
