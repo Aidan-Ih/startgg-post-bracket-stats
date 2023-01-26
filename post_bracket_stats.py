@@ -1,13 +1,15 @@
 #!/usr/bin/env python
-from api_requests import get_entrants, get_sets
+from api_requests import get_entrants_from_slug, get_sets_from_slug
 from utility import get_seed_performance, get_upset_factor
 import argparse
 
 # get event_id from command line
 parser = argparse.ArgumentParser(description='Generates post bracket stats for a start.gg double elimination event')
-parser.add_argument('event_id', help="The event_id of the start.gg bracket")
+parser.add_argument('slug', help="The slug after the /tournament/ in the url")
+parser.add_argument('event_name', help="The name of the event in the bracket")
 args = parser.parse_args()
-event_id = args.event_id
+slug = args.slug
+event_name = args.event_name
 
 # get start.gg token from dotfile
 try:
@@ -17,15 +19,10 @@ except FileNotFoundError:
     quit()
     
 token = f.readline()
-print("token: " + token)
-print("id: " + event_id)
-
-#get entrants and sets via API
-entrants = get_entrants(token, event_id)
-sets = get_sets(token, event_id)
 
 #TODO generate SPR ranking
 def get_spr():
+    entrants = get_entrants_from_slug(slug, event_name, token)
     spr_tuple_list = []
     for entrant in entrants:
         seed = entrant["initialSeed"]
@@ -38,6 +35,7 @@ def get_spr():
         print(i)
 
 def get_uf():
+    sets = get_sets_from_slug(slug, event_name, token)
     #TODO generate upset factor
     uf_tuple_list = []
         

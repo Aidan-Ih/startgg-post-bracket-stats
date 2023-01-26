@@ -1,5 +1,36 @@
 import requests
 
+#gets the event ID from the slug of the tournament, and the event name
+def get_event_id(slug, event_name, token):
+    url = "https://api.start.gg/gql/alpha"
+    headers = {"Authorization": "Bearer " + token}
+    query = """
+    query Tournaments($slug_name: String!) {
+        tournament(slug: $slug_name) {
+            id
+            name
+            events {
+                id
+                name
+            }
+        }
+    }
+    """    
+    variables = {
+        "slug_name": slug
+    }
+    
+    to_send = {"query": query,
+               "variables": variables}
+    
+    response = requests.post(url, json=to_send, headers=headers)
+    events = response.json()["data"]["tournament"]["events"]
+    for event in events:
+        if event["name"] == event_name:
+            return event["id"]
+    
+    return -1
+
 #returns an array of entrants with their name, seed, id, and placement
 def get_entrants(token, id):
     url = "https://api.start.gg/gql/alpha"
@@ -123,8 +154,12 @@ def get_sets(token, id):
         sets += these_sets
     
     return(sets)
+    
+def get_entrants_from_slug(slug, event_name, token):
+    event_id = get_event_id(slug, event_name, token)
+    return get_entrants(token, event_id)
 
-#sets = get_sets("6d0d769a0294cc2068c96080115056f5", 828710)
-#for s in sets:
-#  print(s)
-#print(len(sets))
+def get_sets_from_slug(slug, event_name, token):
+    event_id = get_event_id(slug, event_name, token)
+    return get_sets(token, event_id)
+    
